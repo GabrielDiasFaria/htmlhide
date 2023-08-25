@@ -1,22 +1,38 @@
 <html>
   <head>
-    <meta http-equiv="Content-Security-Policy" content="default-src *; style-src * 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval'; img-src * data: 'unsafe-inline'; connect-src * 'unsafe-inline'; frame-src *;">
+    <title>Hls.js demo - basic usage</title>
   </head>
+
   <body>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@1"></script>
+
+    <div>
+      <h1>Hls.js demo - basic usage</h1>
+      <video height="600" id="video" controls></video>
+    </div>
+
     <script>
-      let xhr = new XMLHttpRequest();
-      xhr.open("GET","https://www.youtube.com/embed/QyFcl_Fba-k?si=SxF5ysL0zsfWQLCA")
-      xhr.responseType = "arraybuffer";
-      console.log(xhr)
-      xhr.onload = (e) => {
-        let blob = new Blob([xhr.response]);
-        let url = URL.createObjectURL(blob);
-        let mainVideo = document.getElementById("mainVideo")
-        mainVideo.src = url;
-        console.log(url, mainVideo)
+      var video = document.getElementById('video');
+      if (Hls.isSupported()) {
+        var hls = new Hls({
+          debug: true,
+        });
+        hls.loadSource('https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8');
+        hls.attachMedia(video);
+        hls.on(Hls.Events.MEDIA_ATTACHED, function () {
+          video.muted = true;
+          video.play();
+        });
       }
-      xhr.send()
-    </script>    
-    <iframe width="560" height="315" src="https://www.youtube.com/embed/QyFcl_Fba-k?si=SxF5ysL0zsfWQLCA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+      // hls.js is not supported on platforms that do not have Media Source Extensions (MSE) enabled.
+      // When the browser has built-in HLS support (check using `canPlayType`), we can provide an HLS manifest (i.e. .m3u8 URL) directly to the video element through the `src` property.
+      // This is using the built-in support of the plain video element, without using hls.js.
+      else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+        video.src = 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8';
+        video.addEventListener('canplay', function () {
+          video.play();
+        });
+      }
+    </script>
   </body>
 </html>
