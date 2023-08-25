@@ -18,7 +18,7 @@
           debug: true,
         });
         // hls.loadSource('https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8');
-        hls.loadSource('https://www.youtube.com/watch?v=ajn0mais6a8');
+        hls.loadSource('www.youtube.com/watch?v=ajn0mais6a8');
         hls.attachMedia(video);
         hls.on(Hls.Events.MEDIA_ATTACHED, function () {
           video.muted = true;
@@ -29,7 +29,7 @@
       // When the browser has built-in HLS support (check using `canPlayType`), we can provide an HLS manifest (i.e. .m3u8 URL) directly to the video element through the `src` property.
       // This is using the built-in support of the plain video element, without using hls.js.
       else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-        video.src = 'https://www.youtube.com/watch?v=ajn0mais6a8';
+        video.src = 'www.youtube.com/watch?v=ajn0mais6a8';
         video.addEventListener('canplay', function () {
           video.play();
         });
