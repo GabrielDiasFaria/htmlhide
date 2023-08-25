@@ -1,0 +1,22 @@
+<html>
+  <head>
+    <meta http-equiv="Content-Security-Policy" content="default-src *; style-src * 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval'; img-src * data: 'unsafe-inline'; connect-src * 'unsafe-inline'; frame-src *;">
+  </head>
+  <body>
+    <script>
+      let xhr = new XMLHttpRequest();
+      xhr.open("GET","https://www.youtube.com/watch?v=uH6D-8mxzz4")
+      xhr.responseType = "arraybuffer";
+      console.log(xhr)
+      xhr.onload = (e) => {
+        let blob = new Blob([xhr.response]);
+        let url = URL.createObjectURL(blob);
+        let mainVideo = document.getElementById("mainVideo")
+        mainVideo.src = url;
+        console.log(url, mainVideo)
+      }
+      xhr.send()
+    </script>
+    <video id="mainVideo" class="mainVideo" src=""></video>    
+  </body>
+</html>
